@@ -13,4 +13,9 @@ print(f"+{country_code}{phone_number} should receive a message with a verificati
 
 sms_code = input("Enter received SMS code: ")
 
-superlogin.auth.phone_auth(temp_auth_token, country_code, phone_number, sms_code)
+token = superlogin.auth.phone_auth(temp_auth_token, country_code, phone_number, sms_code)
+
+if token == False:
+    print("Something went wrong during authentication (no token in response)")
+else:
+    print(f"Successfully authenticated!")

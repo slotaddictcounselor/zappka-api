@@ -92,4 +92,7 @@ class auth:
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
             
-        return response.json()
+        if response.json()['data']['signIn']['customToken']:
+            return response.json()['data']['signIn']['customToken']
+        else:
+            return False
