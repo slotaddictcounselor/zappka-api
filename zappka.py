@@ -5,9 +5,6 @@ import uuid
 # Authentication requests from https://github.com/TehFridge/Zappka3DS
 
 class auth:
-    """
-    Functions related to authentication.
-    """
 
     def get_temp_auth_token():
         """
@@ -136,9 +133,8 @@ class auth:
 
         return response.json()
         
-    def get_snrs_token(token):
+    def get_snrs_token(token, apiKey):
         uid = str(uuid.uuid4())
-        apiKey = "00000000-0000-0000-0000-000000000000" # Not provided.
 
         url = "https://zabka-snrs.zabka.pl/sauth/v3/auth/login/client/conditional"
 
@@ -166,14 +162,11 @@ class auth:
         else:
             return False
         
-class account:
-    """
-    Functions related to account management.
-    """
+class superlogin:
 
     def get_details(token):
         """
-        Requires custom token. Returns account information.
+        Requires secure token (verify_custom_token). Returns account information.
         (first name, birth date, phone number and e-mail)
         """
         url = "https://super-account.spapp.zabka.pl/"
