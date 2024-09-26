@@ -101,7 +101,7 @@ class auth:
     def verify_custom_token(token):
         """
         Requires token received after phone authentication.
-        Returns yet another token and refreshToken.
+        Returns identityProviderToken. Used for zabka-snrs token and Superlogin requests.
         """
         url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q"
 
@@ -133,13 +133,11 @@ class auth:
         }
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
-        print(response.json())
 
         return response.json()
         
-    def get_main_token(token):
+    def get_snrs_token(token):
         uid = str(uuid.uuid4())
-        print(uid)
         apiKey = "00000000-0000-0000-0000-000000000000" # Not provided.
 
         url = "https://zabka-snrs.zabka.pl/sauth/v3/auth/login/client/conditional"
@@ -167,3 +165,40 @@ class auth:
             return response.json()['token']
         else:
             return False
+        
+class account:
+    """
+    Functions related to account management.
+    """
+
+    def get_details(token):
+        """
+        Requires custom token. Returns account information.
+        (first name, birth date, phone number and e-mail)
+        """
+        url = "https://super-account.spapp.zabka.pl/"
+
+        headers = {
+            "authorization": "Bearer " + token,
+            "content-type": "application/json",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "sec-ch-ua-platform": "Android",
+            "sec-ch-ua-mobile": "71",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
+            "dnt": "1",
+            "origin": "https://czs.superlogin.pl",
+            "referer": "https://czs.superlogin.pl/",
+        }
+
+        data = {
+            "operationName": "Profile",
+            "query": "\n  query Profile {\n    profile {\n      id\n      firstName\n      birthDate\n      phoneNumber {\n        countryCode\n        nationalNumber\n      }\n      deleteRequestedAt\n      email\n    }\n  }\n"
+        }
+
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+
+        return response.json()

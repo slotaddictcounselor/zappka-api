@@ -25,9 +25,9 @@ else:
 
 print("Verifying custom token.")
 
-custom_token = superlogin.auth.verify_custom_token(token)
+identityProviderToken = superlogin.auth.verify_identityProviderToken(token)
 
-if custom_token == False:
+if identityProviderToken == False:
     print("Something went wrong during verification (idToken or refreshToken missing)")
     exit()
 else:
@@ -35,11 +35,6 @@ else:
 
 print("Retrieving main token.")
 
-superlogin.auth.get_account_info(custom_token)
+superlogin.auth.get_account_info(identityProviderToken)
 
-main_token = superlogin.auth.get_main_token(custom_token)
-
-if main_token == False:
-    print("Something went wrong while retrieving the main token.")
-else:
-    print("Main token received.")
+print(superlogin.account.get_details(identityProviderToken))
