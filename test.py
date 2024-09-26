@@ -1,10 +1,10 @@
+# This script has no error handlers or anything like that. Purely for testing purposes.
 import zappka
 
 # Get token needed for phone authorization
 temp_auth_token = zappka.auth.get_temp_auth_token()
 
 # Get info from user
-apiKey = input("API key: ")
 phone_number = input("Enter phone number (ex. 123456789): ")
 country_code = input("Enter country code (ex. 48): ")
 
@@ -39,5 +39,25 @@ else:
 # Required so the API won't cry about not starting a session or something.
 zappka.auth.get_account_info(identityProviderToken)
 
+while True:
+    print("1. Change first name.")
+    print("2. Change email.")
+    print("3. Change birth date (YYYY-MM-DD).")
+    print("4. Exit.")
 
+    choice = int(input("> "))
 
+    match choice:
+        case 1:
+            value = input("Enter name: ")
+            zappka.superlogin.change_details(identityProviderToken, "firstName", value)
+        case 2:
+            value = input("Enter email: ")
+            zappka.superlogin.change_details(identityProviderToken, "email", value)
+        case 3:
+            value = input("Enter birth date (YYYY-MM-DD): ")
+            zappka.superlogin.change_details(identityProviderToken, "birthDate", value)
+        case 4:
+            break
+        case _:
+            print("?")

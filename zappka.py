@@ -195,3 +195,42 @@ class superlogin:
         response = requests.post(url, headers=headers, data=json.dumps(data))
 
         return response.json()
+
+    def change_details(token, variable, value):
+        """
+        Requires secure token (verify_custom_token).
+        Changes account details:
+            "birthDate": "YYYY-MM-DD"
+            "firstName": "name"
+            "email": "email@example.com"
+        """
+        url = "https://super-account.spapp.zabka.pl/"
+
+        headers = {
+            "authorization": "Bearer " + token,
+            "content-type": "application/json",
+            "sec-fetch-site": "cross-site",
+            "sec-fetch-mode": "cors",
+            "sec-fetch-dest": "empty",
+            "sec-ch-ua-platform": "Android",
+            "sec-ch-ua-mobile": "71",
+            "accept": "*/*",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7",
+            "dnt": "1",
+            "origin": "https://czs.superlogin.pl",
+            "referer": "https://czs.superlogin.pl/",
+        }
+
+        data = {
+            "query": "\n    mutation UpdateProfile($input: UpdateProfileInput!) {\n  updateProfile(input: $input) {\n    id\n  }\n}\n    ",
+            "variables": {
+                "input": {
+                    variable: value,
+                }
+            }
+        }
+
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        
+        return response.json()
