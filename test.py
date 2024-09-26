@@ -25,15 +25,13 @@ else:
 
 print("Verifying custom token.")
 
-identityProviderToken = superlogin.auth.verify_identityProviderToken(token)
+identityProviderToken = superlogin.auth.verify_custom_token(token)
 
 if identityProviderToken == False:
     print("Something went wrong during verification (idToken or refreshToken missing)")
     exit()
 else:
     print("Custom token verified.")
-
-print("Retrieving main token.")
 
 superlogin.auth.get_account_info(identityProviderToken)
 
