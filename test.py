@@ -13,7 +13,7 @@ print("Sending SMS authentication request.")
 # Send phone authorization request. Sends a message to given phone number.
 zappka.auth.phone_auth_init(temp_auth_token, country_code, phone_number)
 
-print(f"+{country_code}{phone_number} should receive a message with a verification code.")
+print("You should receive a message with a verification code.")
 
 # Get code from user
 sms_code = input("Enter received SMS code: ")
