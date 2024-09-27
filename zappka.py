@@ -133,35 +133,6 @@ class auth:
 
         return response.json()
         
-    def get_snrs_token(token, apiKey):
-        uid = str(uuid.uuid4())
-
-        url = "https://zabka-snrs.zabka.pl/sauth/v3/auth/login/client/conditional"
-
-        headers = {
-            "api-version": "4.4",
-            "application-id": "%C5%BCappka",
-            "user-agent": "Synerise Android SDK 5.9.0 pl.zabka.apb2c",
-            "accept": "application/json",
-            "content-type": "application/json; charset=UTF-8",
-            "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0",
-        }
-
-        data = {
-            "identityProviderToken": token,
-            "identityProvider": "OAUTH",
-            "apiKey": apiKey,
-            "uuid": uid,
-            "deviceId": "0432b18513e325a5",
-        }
-
-        response = requests.post(url, headers=headers, data=json.dumps(data))
-        
-        if response.json()['token']:
-            return response.json()['token']
-        else:
-            return False
-        
 class superlogin:
 
     def get_details(token):
@@ -234,3 +205,37 @@ class superlogin:
         response = requests.post(url, headers=headers, data=json.dumps(data))
         
         return response.json()
+
+class snrs:
+
+    def get_snrs_token(token, apiKey):
+        """
+        Requires identityProviderToken.
+        """
+        uid = str(uuid.uuid4())
+
+        url = "https://zabka-snrs.zabka.pl/sauth/v3/auth/login/client/conditional"
+
+        headers = {
+            "api-version": "4.4",
+            "application-id": "%C5%BCappka",
+            "user-agent": "Synerise Android SDK 5.9.0 pl.zabka.apb2c",
+            "accept": "application/json",
+            "content-type": "application/json; charset=UTF-8",
+            "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0",
+        }
+
+        data = {
+            "identityProviderToken": token,
+            "identityProvider": "OAUTH",
+            "apiKey": apiKey,
+            "uuid": uid,
+            "deviceId": "0432b18513e325a5",
+        }
+
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        
+        if response.json()['token']:
+            return response.json()['token']
+        else:
+            return False
