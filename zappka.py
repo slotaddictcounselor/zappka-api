@@ -239,3 +239,24 @@ class snrs:
             return response.json()['token']
         else:
             return False
+
+    def get_zappsy_amount(token):
+        """
+        Requires snrs token. Returns żappsy amount.
+        """
+        url = "https://zabka-snrs.zabka.pl/schema-service/v2/documents/points/generate"
+
+        headers = {
+            "Cache-Control": "no-cache", 
+            "api-version": "4.4", 
+            "application-id": "%C5%BCappka", 
+            "user-agent": "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
+            "accept": "application/json", 
+            "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
+            "content-type": "application/json; charset=UTF-8", 
+            "authorization": token
+        }
+
+        response = requests.get(url, headers=headers)
+
+        return response.json()['content']['points']

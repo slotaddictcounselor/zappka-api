@@ -1,4 +1,5 @@
 # This script has no error handlers or anything like that. Purely for testing purposes.
+# Overall this script is a mess.
 import zappka
 
 # Get token needed for phone authorization
@@ -39,25 +40,61 @@ else:
 # Required so the API won't cry about not starting a session or something.
 zappka.auth.get_account_info(identityProviderToken)
 
-while True:
-    print("1. Change first name.")
-    print("2. Change email.")
-    print("3. Change birth date (YYYY-MM-DD).")
-    print("4. Exit.")
+apiKey = input("API key: ")
 
+snrs_token = zappka.snrs.get_snrs_token(identityProviderToken, apiKey)
+
+while True:
+    print("\n")
+    print("Main")
+    print("1. Superlogin")
+    print("2. Synerise")
+    print("3. Exit")
     choice = int(input("> "))
 
     match choice:
         case 1:
-            value = input("Enter name: ")
-            zappka.superlogin.change_details(identityProviderToken, "firstName", value)
+            while True:
+                print("\n")
+                print("Main > Superlogin")
+                print("1. Change first name.")
+                print("2. Change email.")
+                print("3. Change birth date (YYYY-MM-DD).")
+                print("4. Exit.")
+
+                choice = int(input("> "))
+
+                match choice:
+                    case 1:
+                        value = input("Enter name: ")
+                        zappka.superlogin.change_details(identityProviderToken, "firstName", value)
+                    case 2:
+                        value = input("Enter email: ")
+                        zappka.superlogin.change_details(identityProviderToken, "email", value)
+                    case 3:
+                        value = input("Enter birth date (YYYY-MM-DD): ")
+                        zappka.superlogin.change_details(identityProviderToken, "birthDate", value)
+                    case 4:
+                        break
+                    case _:
+                        print("?")
         case 2:
-            value = input("Enter email: ")
-            zappka.superlogin.change_details(identityProviderToken, "email", value)
+            while True:
+                print("\n")
+                print("Main > Synerise")
+                print("1. Get żappsy amount")
+                print("2. Exit")
+
+                choice = int(input("> "))
+
+                match choice:
+                    case 1:
+                        print(zappka.snrs.get_zappsy_amount(snrs_token))
+                    case 2:
+                        break
+                    case _:
+                        print("?")
         case 3:
-            value = input("Enter birth date (YYYY-MM-DD): ")
-            zappka.superlogin.change_details(identityProviderToken, "birthDate", value)
-        case 4:
-            break
-        case _:
-            print("?")
+            exit()
+                
+
