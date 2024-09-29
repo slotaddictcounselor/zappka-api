@@ -260,3 +260,43 @@ class snrs:
         response = requests.get(url, headers=headers)
 
         return response.json()['content']['points']
+
+    def transfer_zappsy(token, phoneNumber, amount, message):
+        """
+        Requires snrs token and phone number of the user you want to send żappsy to.
+        """
+
+        # request 1 - get client id from phone number
+
+        url = f"https://api.zappka.app/transfer-points/users/phone-number/{phoneNumber}"
+
+        headers = {
+           "Authorization": token,
+           "Content-Type": "application/json",
+           "API-Version": "12",
+           "App-Version": "3.21.60",
+           "App-Platform": "android",
+           "App-Device": "samsung SM-A600FN",
+           "Accept-Encoding": "gzip",
+           "User-Agent": "okhttp/4.12.0"
+        }
+        
+        response = requests.get(url, headers=headers)
+        clientId = response.json()["client_id"]
+
+        # request 2 - transfer żappsy to another account
+
+        url = f"https://api.zappka.app/transfer-points/users/{clientId}"
+
+        # reusing headers from previous request
+
+        data = {
+            "sender_name": "S", # to do: get sender_name from superlogin account details
+            "recipient_name": "R", # and maybe figure out how to get recipient name
+            "points_number": amount,
+            "message": message,
+        }
+
+        response = requests.post(url, headers=headers, data=json.dumps(data))
+        
+        return response.json()['status']

@@ -66,14 +66,23 @@ while True:
 
                 match choice:
                     case 1:
-                        value = input("Enter name: ")
-                        zappka.superlogin.change_details(identityProviderToken, "firstName", value)
+                        try:
+                            value = input("Enter name: ")
+                            zappka.superlogin.change_details(identityProviderToken, "firstName", value)
+                        except KeyboardInterrupt:
+                            pass
                     case 2:
-                        value = input("Enter email: ")
-                        zappka.superlogin.change_details(identityProviderToken, "email", value)
+                        try:
+                            value = input("Enter email: ")
+                            zappka.superlogin.change_details(identityProviderToken, "email", value)
+                        except KeyboardInterrupt:
+                            pass
                     case 3:
-                        value = input("Enter birth date (YYYY-MM-DD): ")
-                        zappka.superlogin.change_details(identityProviderToken, "birthDate", value)
+                        try:
+                            value = input("Enter birth date (YYYY-MM-DD): ")
+                            zappka.superlogin.change_details(identityProviderToken, "birthDate", value)
+                        except KeyboardInterrupt:
+                            pass
                     case 4:
                         break
                     case _:
@@ -83,7 +92,8 @@ while True:
                 print("\n")
                 print("Main > Synerise")
                 print("1. Get żappsy amount")
-                print("2. Exit")
+                print("2. Transfer żappsy")
+                print("3. Exit")
 
                 choice = int(input("> "))
 
@@ -91,10 +101,21 @@ while True:
                     case 1:
                         print(zappka.snrs.get_zappsy_amount(snrs_token))
                     case 2:
+                        try:
+                            phoneNumber = input("Enter recipient phone number (ex. 123456789): ")
+                            amount = int(input("Enter amount of żappsy: "))
+                            message = input("Enter message: ")
+
+                            if zappka.snrs.transfer_zappsy(snrs_token, phoneNumber, amount, message) == "PROCESSING":
+                                print(f"Successfully sent {amount} żappsy.")
+                            else:
+                                print("Something went wrong.")
+                                # need to improve this later
+                        except KeyboardInterrupt:
+                            pass
+                    case 3:
                         break
                     case _:
                         print("?")
         case 3:
             exit()
-                
-
