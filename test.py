@@ -106,11 +106,9 @@ while True:
                             amount = int(input("Enter amount of żappsy: "))
                             message = input("Enter message: ")
 
-                            if zappka.snrs.transfer_zappsy(snrs_token, phoneNumber, amount, message) == "PROCESSING":
-                                print(f"Successfully sent {amount} żappsy.")
-                            else:
-                                print("Something went wrong.")
-                                # need to improve this later
+                            zappka.snrs.transfer_zappsy(snrs_token, phoneNumber, amount, message)
+                            print(f"Successfully sent {amount} żappsy.")
+                            # need to improve this later
                         except KeyboardInterrupt:
                             pass
                     case 3:
