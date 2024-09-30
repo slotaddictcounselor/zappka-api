@@ -270,10 +270,7 @@ class snrs:
             return response.json()['content']['points']
         except KeyError:
             try:
-                print("Error: No points value in response.",
-                    "Press Enter to print response.",
-                    "Press CTRL+C to continue.")
-                input()
+                input("Error: No points value in response.\nPress Enter to print response.\nPress CTRL+C to continue.")
                 print(response.json())
                 return
             except KeyboardInterrupt:
@@ -324,10 +321,7 @@ class snrs:
             clientId = response.json()["client_id"]
         except KeyError:
             try:
-                print("Error: No client ID in response. (user doesn't exist?)",
-                    "Press Enter to print response.",
-                    "Press CTRL+C to continue.")
-                input()
+                input("Error: No client ID in response. (user doesn't exist?)\nPress Enter to print response.\nPress CTRL+C to continue.")
                 print(response.json())
                 return
             except KeyboardInterrupt:
@@ -352,10 +346,7 @@ class snrs:
             return response.json()['status']
         except KeyError:
             try:
-                print("Error: No status in response. (transfer possibly failed)",
-                    "Press Enter to print response.",
-                    "Press CTRL+C to continue.")
-                input()
+                input("Error: No status in response. (transfer possibly failed)\nPress Enter to print response.\nPress CTRL+C to continue.")
                 print(response.json())
                 return
             except KeyboardInterrupt:
