@@ -7,10 +7,12 @@
 
 ## To-do
 
-- proper error handling
-- proper documentation
 - QR code support
 - coupons
+- Żappsy history
+- proper error handling
+- proper documentation
+- code cleanup
 
 ## Info
 
