@@ -25,7 +25,7 @@ class auth:
         try:
             return response.json()['idToken']
         except KeyError:
-            raise Exception("No idToken in response.\n" + response.json())
+            raise Exception("No idToken in response. (get temp auth token)")
 
     def phone_auth_init(temp_auth_token, country_code, phone_number):
         """
@@ -98,9 +98,9 @@ class auth:
         try:
             return response.json()['data']['signIn']['customToken']
         except KeyError:
-            raise Exception("No customToken in response.\n" + response.json())
+            raise Exception("No customToken in response. (phone auth)")
         except TypeError:
-            raise Exception("Incorrect SMS code.")
+            raise Exception("Incorrect SMS code. (phone auth)")
         
     def verify_custom_token(token):
         """
@@ -123,7 +123,7 @@ class auth:
         try:
             return response.json()['idToken']
         except KeyError:
-            raise Exception("No idToken in response.\n" + response.json())
+            raise Exception("No idToken in response. (verify custom token)")
         
     def get_account_info(token):
         url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q"
@@ -245,7 +245,7 @@ class snrs:
         try:
             return response.json()['token']
         except KeyError:
-            raise Exception("No token in response.\n" + response.json())
+            raise Exception("No token in response. (snrs)")
 
     def get_zappsy_amount(token):
         """
@@ -269,12 +269,8 @@ class snrs:
         try:
             return response.json()['content']['points']
         except KeyError:
-            try:
-                input("Error: No points value in response.\nPress Enter to print response.\nPress CTRL+C to continue.")
-                print(response.json())
-                return
-            except KeyboardInterrupt:
-                return
+            print("Error: No points value in response.")
+            return None
     
     def get_personal_information(token):
         """
@@ -320,12 +316,8 @@ class snrs:
         try:
             clientId = response.json()["client_id"]
         except KeyError:
-            try:
-                input("Error: No client ID in response. (user doesn't exist?)\nPress Enter to print response.\nPress CTRL+C to continue.")
-                print(response.json())
-                return
-            except KeyboardInterrupt:
-                return
+            print("Error: No client ID in response. (user doesn't exist?)")
+            return
 
         # request 2 - transfer żappsy to another account
 
@@ -345,9 +337,5 @@ class snrs:
         try:
             return response.json()['status']
         except KeyError:
-            try:
-                input("Error: No status in response. (transfer possibly failed)\nPress Enter to print response.\nPress CTRL+C to continue.")
-                print(response.json())
-                return
-            except KeyboardInterrupt:
-                return
+            print("Error: No status in response. (transfer possibly failed)")
+            return None
