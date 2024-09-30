@@ -21,14 +21,18 @@ class auth:
         }
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
-            
-        return response.json()['idToken']
+        
+        try:
+            return response.json()['idToken']
+        except KeyError:
+            raise Exception("No idToken in response.\n" + response.json())
 
     def phone_auth_init(temp_auth_token, country_code, phone_number):
         """
         Start phone number authentication.
         Request sends SMS message to given phone number.
         """
+        if temp_auth_token == None: return
         url = "https://super-account.spapp.zabka.pl/"
 
         headers = {
@@ -62,6 +66,7 @@ class auth:
 
         Uses token from get_temp_auth_token()
         """
+        if temp_auth_token == None: return
         url = "https://super-account.spapp.zabka.pl/"
 
         headers = {
@@ -90,10 +95,12 @@ class auth:
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
             
-        if response.json()['data']['signIn']['customToken']:
+        try:
             return response.json()['data']['signIn']['customToken']
-        else:
-            return False
+        except KeyError:
+            raise Exception("No customToken in response.\n" + response.json())
+        except TypeError:
+            raise Exception("Incorrect SMS code.")
         
     def verify_custom_token(token):
         """
@@ -113,10 +120,10 @@ class auth:
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
 
-        if response.json()['idToken']:
+        try:
             return response.json()['idToken']
-        else:
-            return False
+        except KeyError:
+            raise Exception("No idToken in response.\n" + response.json())
         
     def get_account_info(token):
         url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/getAccountInfo?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q"
@@ -235,10 +242,10 @@ class snrs:
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
         
-        if response.json()['token']:
+        try:
             return response.json()['token']
-        else:
-            return False
+        except KeyError:
+            raise Exception("No token in response.\n" + response.json())
 
     def get_zappsy_amount(token):
         """
@@ -259,15 +266,45 @@ class snrs:
 
         response = requests.get(url, headers=headers)
 
-        return response.json()['content']['points']
+        try:
+            return response.json()['content']['points']
+        except KeyError:
+            try:
+                print("Error: No points value in response.",
+                    "Press Enter to print response.",
+                    "Press CTRL+C to continue.")
+                input()
+                print(response.json())
+                return
+            except KeyboardInterrupt:
+                return
+    
+    def get_personal_information(token):
+        """
+        superlogin.get_details() on steroids.
+        """
+        url = "https://zabka-snrs.zabka.pl/v4/my-account/personal-information"
+        
+        headers = {
+            "api-version": "4.4", 
+            "application-id": "%C5%BCappka", 
+            "user-agent": "Synerise Android SDK 5.9.0 pl.zabka.apb2c", 
+            "accept": "application/json", 
+            "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
+            "content-type": "application/json; charset=UTF-8", 
+            "authorization": token,
+        }
 
-    def transfer_zappsy(token, phoneNumber, amount, message):
+        response = requests.get(url, headers=headers)
+
+        return response.json()
+
+    def transfer_zappsy(token, phoneNumber, amount, message, anonymous):
         """
         Requires snrs token and phone number of the user you want to send żappsy to.
         """
 
         # request 1 - get client id from phone number
-
         url = f"https://api.zappka.app/transfer-points/users/phone-number/{phoneNumber}"
 
         headers = {
@@ -282,7 +319,19 @@ class snrs:
         }
         
         response = requests.get(url, headers=headers)
-        clientId = response.json()["client_id"]
+
+        try:
+            clientId = response.json()["client_id"]
+        except KeyError:
+            try:
+                print("Error: No client ID in response. (user doesn't exist?)",
+                    "Press Enter to print response.",
+                    "Press CTRL+C to continue.")
+                input()
+                print(response.json())
+                return
+            except KeyboardInterrupt:
+                return
 
         # request 2 - transfer żappsy to another account
 
@@ -291,12 +340,23 @@ class snrs:
         # reusing headers from previous request
 
         data = {
-            "sender_name": "S", # to do: get sender_name from superlogin account details
-            "recipient_name": "R", # and maybe figure out how to get recipient name
+            "sender_name": "Anonimowy" if anonymous else snrs.get_personal_information(token)['firstName'],
+            "recipient_name": "Odbiorca",
             "points_number": amount,
             "message": message,
         }
 
         response = requests.post(url, headers=headers, data=json.dumps(data))
         
-        return response.json()['status']
+        try:
+            return response.json()['status']
+        except KeyError:
+            try:
+                print("Error: No status in response. (transfer possibly failed)",
+                    "Press Enter to print response.",
+                    "Press CTRL+C to continue.")
+                input()
+                print(response.json())
+                return
+            except KeyboardInterrupt:
+                return

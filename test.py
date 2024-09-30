@@ -60,7 +60,8 @@ while True:
                 print("1. Change first name.")
                 print("2. Change email.")
                 print("3. Change birth date (YYYY-MM-DD).")
-                print("4. Exit.")
+                print("4. Get account details")
+                print("5. Exit.")
 
                 choice = int(input("> "))
 
@@ -84,6 +85,8 @@ while True:
                         except KeyboardInterrupt:
                             pass
                     case 4:
+                        print(zappka.superlogin.get_details(identityProviderToken))
+                    case 5:
                         break
                     case _:
                         print("?")
@@ -93,7 +96,8 @@ while True:
                 print("Main > Synerise")
                 print("1. Get żappsy amount")
                 print("2. Transfer żappsy")
-                print("3. Exit")
+                print("3. Get personal information")
+                print("4. Exit")
 
                 choice = int(input("> "))
 
@@ -105,13 +109,26 @@ while True:
                             phoneNumber = input("Enter recipient phone number (ex. 123456789): ")
                             amount = int(input("Enter amount of żappsy: "))
                             message = input("Enter message: ")
+                            anonymous = input("Anonymous (replace first name)? [Y/N/C, default: N]: ")
+                            match anonymous:
+                                case "Y":
+                                    anonymous = True
+                                case "N":
+                                    anonymous = False
+                                case "C":
+                                    break
+                                case _:
+                                    anonymous = False
 
-                            zappka.snrs.transfer_zappsy(snrs_token, phoneNumber, amount, message)
-                            print(f"Successfully sent {amount} żappsy.")
-                            # need to improve this later
+                            if zappka.snrs.transfer_zappsy(snrs_token, phoneNumber, amount, message, anonymous) == "PROCESSING":
+                                print(f"Successfully sent {amount} żappsy.")
+                            else:
+                                pass
                         except KeyboardInterrupt:
                             pass
                     case 3:
+                        print(zappka.snrs.get_personal_information(snrs_token))
+                    case 4:
                         break
                     case _:
                         print("?")
