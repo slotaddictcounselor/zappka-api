@@ -1,6 +1,7 @@
 # This script has no error handlers or anything like that. Purely for testing purposes.
 # Overall this script is a mess.
 import zappka
+import qrcode # Print QR code to console
 
 # Get token needed for phone authorization
 temp_auth_token = zappka.auth.get_temp_auth_token()
@@ -49,7 +50,8 @@ while True:
     print("Main")
     print("1. Superlogin")
     print("2. Synerise")
-    print("3. Exit")
+    print("3. QR")
+    print("4. Exit")
     choice = int(input("> "))
 
     match choice:
@@ -133,4 +135,30 @@ while True:
                     case _:
                         print("?")
         case 3:
+            while True:
+                print("1. Show QR code")
+                print("2. Exit")
+
+                choice = int(input("> "))
+
+                match choice:
+                    case 1:
+                        url = zappka.qr.get_qr_code(identityProviderToken)
+
+                        # Show URL as QR code
+                        qr = qrcode.QRCode(
+                                version=1,
+                                error_correction=qrcode.constants.ERROR_CORRECT_L,
+                                box_size=10,
+                                border=4,
+                        )
+                        qr.add_data(url)
+                        qr.print_ascii(invert=True)
+
+                        print(url)
+                    case 2:
+                        break
+                    case _:
+                        print("?")
+        case 4:
             exit()

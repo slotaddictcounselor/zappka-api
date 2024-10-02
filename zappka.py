@@ -1,10 +1,14 @@
 import requests
 import json
 import uuid
-
-# Authentication requests from https://github.com/TehFridge/Zappka3DS
+import struct # TOTP calculation
+import time # TOTP calculation
+import hmac # TOTP calculation
+from hashlib import sha1 # TOTP calculation
 
 class auth:
+
+    # Authentication requests from https://github.com/TehFridge/Zappka3DS
 
     def get_temp_auth_token():
         """
@@ -339,3 +343,42 @@ class snrs:
         except KeyError:
             print("Error: No status in response. (transfer possibly failed)")
             return None
+
+class qr:
+
+    def get_qr_code(identityProviderToken):
+        url = "https://qr-bff.spapp.zabka.pl/qr-code/secret"
+
+        headers = {
+            "Authorization": identityProviderToken,
+            "content-type": "application/json",
+            "app": "zappka-mobile",
+            "user-agent": "okhttp/4.12.0"
+        }
+
+        response = requests.get(url, headers=headers)
+
+        loyal = response.json()['secrets']['loyal'] # secret
+        # pay = response.json()['secrets']['pay'] # unused but might be useful for later ig
+        userId = response.json()['userId']
+
+        # TOTP calculation by https://github.com/domints
+
+        intMax = 2147483647
+
+        secret = bytes.fromhex(loyal)
+
+        h = hmac.new(secret, struct.pack('>q', int(int(time.time()) / 30 )), sha1)
+        out = h.digest()
+
+        def c(arr: bytes, index: int) -> int:
+            result = 0
+            for i in range(index, index + 4):
+                result = (result << 8) | (arr[i] & 0xFF)
+            return result
+
+        magic = (c(out, out[len(out)-1] & 0xF) & 2147483647) % 1_000_000
+
+        totp = '{magic:06d}'.format(magic=magic)
+
+        return f"https://zlgn.pl/view/dashboard?ploy={userId}&totp={totp}"
