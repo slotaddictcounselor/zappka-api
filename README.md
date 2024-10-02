@@ -13,6 +13,7 @@
 - proper error handling
 - proper documentation
 - code cleanup
+- improve README
 
 ## Info
 
