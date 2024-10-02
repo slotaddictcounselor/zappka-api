@@ -4,10 +4,10 @@
 - Superlogin account management
 - Get Żappsy amount
 - Transfer Żappsy to another account (needs improvement)
+- QR code support
 
 ## To-do
 
-- QR code support
 - coupons
 - Żappsy history
 - proper error handling
