@@ -362,6 +362,24 @@ class snrs:
         except KeyError:
             print("Error: No status in response. (transfer possibly failed)")
             return None
+        
+    def get_zappsy_history(snrsToken):
+        url = "https://zabka-snrs.zabka.pl/v4/events?action=client.activatePromotion,client.deactivatePromotion,points.loyalty,points.upcharge,points.downcharge,points.register,points.questCompleted,points.received,points.sent&time[from]=2000-06-09T08:49:58.000Z&limit=100"
+
+        headers = {
+            "Authorization": snrsToken,
+            "api-version": "4.4",
+            "application-id": "%C5%BCappka",
+            "user-agent": "Synerise Android SDK 5.9.0 pl.zabka.apb2c",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "mobile-info": "mobile-info: android;28;A600FNXXS5BTB2;9;SM-A600FN;samsung;5.9.0",
+        }
+
+        response = requests.get(url, headers=headers)
+
+        return response.json()
+
 
 class qr:
 

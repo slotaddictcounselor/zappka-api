@@ -83,7 +83,8 @@ while True:
                 print("1. Get żappsy amount")
                 print("2. Transfer żappsy")
                 print("3. Get personal information")
-                print("4. Exit")
+                print("4. Get żappsy history (long response print!)")
+                print("5. Exit")
 
                 choice = int(input("> "))
 
@@ -116,6 +117,8 @@ while True:
                     case 3:
                         print(zappka.snrs.get_personal_information(snrsToken))
                     case 4:
+                        print(zappka.snrs.get_zappsy_history(snrsToken))
+                    case 5:
                         break
                     case _:
                         print("?")

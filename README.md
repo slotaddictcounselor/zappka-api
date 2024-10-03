@@ -3,13 +3,13 @@
 - authentication (phone number)
 - Superlogin account management
 - Get Żappsy amount
-- Transfer Żappsy to another account (needs improvement)
+- Transfer Żappsy to another account (improvement?)
 - QR code support
+- Żappsy history (for improvement? - long response)
 
 ## To-do
 
 - coupons
-- Żappsy history
 - proper error handling
 - proper documentation
 - code cleanup
