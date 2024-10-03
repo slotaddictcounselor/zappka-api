@@ -95,7 +95,7 @@ while True:
                             phoneNumber = input("Enter recipient phone number (ex. 123456789): ")
                             amount = int(input("Enter amount of żappsy: "))
                             message = input("Enter message: ")
-                            anonymous = input("Anonymous (replace first name)? [Y/N/C, default: N]: ")
+                            anonymous = input("Anonymous (replace first name)? [Y/N/C, default: Y]: ")
                             match anonymous:
                                 case "Y":
                                     anonymous = True
@@ -104,7 +104,7 @@ while True:
                                 case "C":
                                     break
                                 case _:
-                                    anonymous = False
+                                    anonymous = True
 
                             if zappka.snrs.transfer_zappsy(snrsToken, phoneNumber, amount, message, anonymous) == "PROCESSING":
                                 print(f"Successfully sent {amount} żappsy.")
