@@ -10,7 +10,7 @@ class auth:
 
     # Authentication requests from https://github.com/TehFridge/Zappka3DS
 
-    def get_temp_auth_token():
+    def get_idToken():
         """
         Used for phone authentication.
         """
@@ -31,17 +31,16 @@ class auth:
         except KeyError:
             raise Exception("No idToken in response. (get temp auth token)")
 
-    def phone_auth_init(temp_auth_token, country_code, phone_number):
+    def phone_auth_init(idToken, country_code, phone_number):
         """
         Start phone number authentication.
         Request sends SMS message to given phone number.
         """
-        if temp_auth_token == None: return
         url = "https://super-account.spapp.zabka.pl/"
 
         headers = {
             "content-type": "application/json",
-            "authorization": "Bearer " + temp_auth_token,
+            "authorization": "Bearer " + idToken,
         }
 
         data = {
@@ -62,20 +61,19 @@ class auth:
         return response.json()
 
 
-    def phone_auth(temp_auth_token, country_code, phone_number, verify_code):
+    def phone_auth(idToken, country_code, phone_number, verify_code):
         """
         Complete phone number authentication.
         Sends the code from SMS message to Żabka.
-        Returns token.
+        Returns customToken.
 
-        Uses token from get_temp_auth_token()
+        Uses token from get_idToken()
         """
-        if temp_auth_token == None: return
         url = "https://super-account.spapp.zabka.pl/"
 
         headers = {
             "content-type": "application/json",
-            "authorization": "Bearer " + temp_auth_token,
+            "authorization": "Bearer " + idToken,
             "user-agent": "okhttp/4.12.0",
             "x-apollo-operation-id": "a531998ec966db0951239efb91519560346cfecac77459fe3b85c5b786fa41de",
             "x-apollo-operation-name": "SignInWithPhone",
@@ -106,9 +104,9 @@ class auth:
         except TypeError:
             raise Exception("Incorrect SMS code. (phone auth)")
         
-    def verify_custom_token(token):
+    def verify_custom_token(customToken):
         """
-        Requires token received after phone authentication.
+        Requires customToken received after phone authentication.
         Returns identityProviderToken. Used for zabka-snrs token and Superlogin requests.
         """
         url = "https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyCustomToken?key=AIzaSyDe2Fgxn_8HJ6NrtJtp69YqXwocutAoa9Q"
@@ -118,7 +116,7 @@ class auth:
         }
 
         data = {
-            "token": token,
+            "token": customToken,
             "returnSecureToken": "True",
         }
 
@@ -146,15 +144,15 @@ class auth:
         
 class superlogin:
 
-    def get_details(token):
+    def get_details(secureToken):
         """
-        Requires secure token (verify_custom_token). Returns account information.
+        Requires secureToken (verify_custom_token). Returns account information.
         (first name, birth date, phone number and e-mail)
         """
         url = "https://super-account.spapp.zabka.pl/"
 
         headers = {
-            "authorization": "Bearer " + token,
+            "authorization": "Bearer " + secureToken,
             "content-type": "application/json",
             "sec-fetch-site": "cross-site",
             "sec-fetch-mode": "cors",
@@ -178,7 +176,7 @@ class superlogin:
 
         return response.json()
 
-    def change_details(token, variable, value):
+    def change_details(identityProviderToken, variable, value):
         """
         Requires secure token (verify_custom_token).
         Changes account details:
@@ -189,7 +187,7 @@ class superlogin:
         url = "https://super-account.spapp.zabka.pl/"
 
         headers = {
-            "authorization": "Bearer " + token,
+            "authorization": "Bearer " + identityProviderToken,
             "content-type": "application/json",
             "sec-fetch-site": "cross-site",
             "sec-fetch-mode": "cors",
@@ -219,7 +217,7 @@ class superlogin:
 
 class snrs:
 
-    def get_snrs_token(token, apiKey):
+    def get_snrs_token(identityProviderToken):
         """
         Requires identityProviderToken.
         """
@@ -237,9 +235,9 @@ class snrs:
         }
 
         data = {
-            "identityProviderToken": token,
+            "identityProviderToken": identityProviderToken,
             "identityProvider": "OAUTH",
-            "apiKey": apiKey,
+            "apiKey": "b646c65e-a43d-4a61-9294-6c7c4385c762",
             "uuid": uid,
             "deviceId": "0432b18513e325a5",
         }
@@ -251,7 +249,7 @@ class snrs:
         except KeyError:
             raise Exception("No token in response. (snrs)")
 
-    def get_zappsy_amount(token):
+    def get_zappsy_amount(snrsToken):
         """
         Requires snrs token. Returns żappsy amount.
         """
@@ -265,7 +263,7 @@ class snrs:
             "accept": "application/json", 
             "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
             "content-type": "application/json; charset=UTF-8", 
-            "authorization": token
+            "authorization": snrsToken,
         }
 
         response = requests.get(url, headers=headers)
@@ -276,7 +274,7 @@ class snrs:
             print("Error: No points value in response.")
             return None
     
-    def get_personal_information(token):
+    def get_personal_information(snrsToken):
         """
         superlogin.get_details() on steroids.
         """
@@ -289,14 +287,14 @@ class snrs:
             "accept": "application/json", 
             "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
             "content-type": "application/json; charset=UTF-8", 
-            "authorization": token,
+            "authorization": snrsToken,
         }
 
         response = requests.get(url, headers=headers)
 
         return response.json()
 
-    def transfer_zappsy(token, phoneNumber, amount, message, anonymous):
+    def transfer_zappsy(snrsToken, phoneNumber, amount, message, anonymous):
         """
         Requires snrs token and phone number of the user you want to send żappsy to.
         """
@@ -305,7 +303,7 @@ class snrs:
         url = f"https://api.zappka.app/transfer-points/users/phone-number/{phoneNumber}"
 
         headers = {
-           "Authorization": token,
+           "Authorization": snrsToken,
            "Content-Type": "application/json",
            "API-Version": "12",
            "App-Version": "3.21.60",
@@ -330,7 +328,7 @@ class snrs:
         # reusing headers from previous request
 
         data = {
-            "sender_name": "Anonimowy" if anonymous else snrs.get_personal_information(token)['firstName'],
+            "sender_name": "Anonimowy" if anonymous else snrs.get_personal_information(snrsToken)['firstName'],
             "recipient_name": "Odbiorca",
             "points_number": amount,
             "message": message,

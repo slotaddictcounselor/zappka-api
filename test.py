@@ -4,7 +4,7 @@ import zappka
 import qrcode # Print QR code to console
 
 # Get token needed for phone authorization
-temp_auth_token = zappka.auth.get_temp_auth_token()
+idToken = zappka.auth.get_idToken()
 
 # Get info from user
 phone_number = input("Enter phone number (ex. 123456789): ")
@@ -13,37 +13,21 @@ country_code = input("Enter country code (ex. 48): ")
 print("Sending SMS authentication request.")
 
 # Send phone authorization request. Sends a message to given phone number.
-zappka.auth.phone_auth_init(temp_auth_token, country_code, phone_number)
+zappka.auth.phone_auth_init(idToken, country_code, phone_number)
 
 print("You should receive a message with a verification code.")
 
 # Get code from user
 sms_code = input("Enter received SMS code: ")
 
-auth_token = zappka.auth.phone_auth(temp_auth_token, country_code, phone_number, sms_code)
+customToken = zappka.auth.phone_auth(idToken, country_code, phone_number, sms_code)
 
-if auth_token == False:
-    print("Something went wrong during authentication (no token in response)")
-    exit()
-else:
-    print(f"Successfully authenticated!")
-
-print("Verifying custom token.")
-
-identityProviderToken = zappka.auth.verify_custom_token(auth_token)
-
-if identityProviderToken == False:
-    print("Something went wrong during verification (idToken missing)")
-    exit()
-else:
-    print("Custom token verified.")
+identityProviderToken = zappka.auth.verify_custom_token(customToken)
 
 # Required so the API won't cry about not starting a session or something.
 zappka.auth.get_account_info(identityProviderToken)
 
-apiKey = input("API key: ")
-
-snrs_token = zappka.snrs.get_snrs_token(identityProviderToken, apiKey)
+snrsToken = zappka.snrs.get_snrs_token(identityProviderToken)
 
 while True:
     print("\n")
@@ -105,7 +89,7 @@ while True:
 
                 match choice:
                     case 1:
-                        print(zappka.snrs.get_zappsy_amount(snrs_token))
+                        print(zappka.snrs.get_zappsy_amount(snrsToken))
                     case 2:
                         try:
                             phoneNumber = input("Enter recipient phone number (ex. 123456789): ")
@@ -122,14 +106,14 @@ while True:
                                 case _:
                                     anonymous = False
 
-                            if zappka.snrs.transfer_zappsy(snrs_token, phoneNumber, amount, message, anonymous) == "PROCESSING":
+                            if zappka.snrs.transfer_zappsy(snrsToken, phoneNumber, amount, message, anonymous) == "PROCESSING":
                                 print(f"Successfully sent {amount} żappsy.")
                             else:
                                 pass
                         except KeyboardInterrupt:
                             pass
                     case 3:
-                        print(zappka.snrs.get_personal_information(snrs_token))
+                        print(zappka.snrs.get_personal_information(snrsToken))
                     case 4:
                         break
                     case _:
