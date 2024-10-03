@@ -249,7 +249,7 @@ class snrs:
         except KeyError:
             raise Exception("No token in response. (snrs)")
 
-    def get_zappsy_amount(snrsToken):
+    def get_current_zappsy_amount(snrsToken):
         """
         Requires snrs token. Returns żappsy amount.
         """
@@ -264,6 +264,27 @@ class snrs:
             "mobile-info": "horizon;28;AW700000000;9;CTR-001;nintendo;5.9.0", 
             "content-type": "application/json; charset=UTF-8", 
             "authorization": snrsToken,
+        }
+
+        response = requests.get(url, headers=headers)
+
+        try:
+            return response.json()['content']['points']
+        except KeyError:
+            print("Error: No points value in response.")
+            return None
+        
+    def get_alltime_zappsy_amount(snrsToken):
+        url = "https://zabka-snrs.zabka.pl/schema-service/v2/documents/points-gained/generate"
+
+        headers = {
+            "Authorization": snrsToken,
+            "api-version": "4.4",
+            "application-id": "%C5%BCappka",
+            "user-agent": "Synerise Android SDK 5.9.0 pl.zabka.apb2c",
+            "accept": "application/json",
+            "content-type": "application/json",
+            "mobile-info": "android;28;A600FNXXS5BTB2;9;SM-A600FN;samsung;5.9.0",
         }
 
         response = requests.get(url, headers=headers)

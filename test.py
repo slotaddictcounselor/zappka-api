@@ -89,7 +89,8 @@ while True:
 
                 match choice:
                     case 1:
-                        print(zappka.snrs.get_zappsy_amount(snrsToken))
+                        print(f"Current żappsy amount: {zappka.snrs.get_current_zappsy_amount(snrsToken)}")
+                        print(f"All-time collected żappsy amount: {zappka.snrs.get_alltime_zappsy_amount(snrsToken)}")
                     case 2:
                         try:
                             phoneNumber = input("Enter recipient phone number (ex. 123456789): ")
