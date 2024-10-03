@@ -381,4 +381,4 @@ class qr:
 
         totp = '{magic:06d}'.format(magic=magic)
 
-        return f"https://zlgn.pl/view/dashboard?ploy={userId}&totp={totp}"
+        return f"https://zlgn.pl/view/dashboard?ploy={userId}&loyal={totp}"
