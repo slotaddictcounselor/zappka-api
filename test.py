@@ -108,10 +108,7 @@ while True:
                                 case _:
                                     firstName = "Anonimowy"
 
-                            if zappka.snrs.transfer_zappsy(snrsToken, phoneNumber, amount, message, firstName) == "PROCESSING":
-                                print(f"Successfully sent {amount} żappsy.")
-                            else:
-                                pass
+                            zappka.snrs.transfer_zappsy(snrsToken, phoneNumber, amount, message, firstName)
                         except KeyboardInterrupt:
                             pass
                     case 3:
