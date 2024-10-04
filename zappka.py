@@ -315,7 +315,7 @@ class snrs:
 
         return response.json()
 
-    def transfer_zappsy(snrsToken, phoneNumber, amount, message, anonymous):
+    def transfer_zappsy(snrsToken, phoneNumber, amount, message, firstName):
         """
         Requires snrs token and phone number of the user you want to send żappsy to.
         """
@@ -349,7 +349,7 @@ class snrs:
         # reusing headers from previous request
 
         data = {
-            "sender_name": "Anonimowy" if anonymous else snrs.get_personal_information(snrsToken)['firstName'],
+            "sender_name": firstName,
             "recipient_name": "Odbiorca",
             "points_number": amount,
             "message": message,

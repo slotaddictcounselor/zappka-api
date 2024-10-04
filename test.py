@@ -100,15 +100,15 @@ while True:
                             anonymous = input("Anonymous (replace first name)? [Y/N/C, default: Y]: ")
                             match anonymous:
                                 case "Y":
-                                    anonymous = True
+                                    firstName = "Anonimowy"
                                 case "N":
-                                    anonymous = False
+                                    firstName = zappka.snrs.get_personal_information(snrsToken)['firstName']
                                 case "C":
                                     break
                                 case _:
-                                    anonymous = True
+                                    firstName = "Anonimowy"
 
-                            if zappka.snrs.transfer_zappsy(snrsToken, phoneNumber, amount, message, anonymous) == "PROCESSING":
+                            if zappka.snrs.transfer_zappsy(snrsToken, phoneNumber, amount, message, firstName) == "PROCESSING":
                                 print(f"Successfully sent {amount} żappsy.")
                             else:
                                 pass
