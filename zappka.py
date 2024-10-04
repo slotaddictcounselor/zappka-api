@@ -401,8 +401,6 @@ class qr:
 
         # TOTP calculation by https://github.com/domints
 
-        intMax = 2147483647
-
         secret = bytes.fromhex(loyal)
 
         h = hmac.new(secret, struct.pack('>q', int(int(time.time()) / 30 )), sha1)
