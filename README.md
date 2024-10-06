@@ -1,13 +1,14 @@
 # Żappka & Superlogin API
 
-- [Installation](#installation)
-- [Credits](#credits)
-- [Examples](#examples)
-   * [Authentication](#authentication)
-   * [Synerise API requests](#synerise-api-requests)
-   * [Superlogin API requests](#superlogin-api-requests)
-   * [QR code](#qr-code)
-- [Info](#info)
+- [Żappka \& Superlogin API](#żappka--superlogin-api)
+  - [Installation](#installation)
+  - [Credits](#credits)
+  - [Examples](#examples)
+    - [Authentication](#authentication)
+    - [Synerise API requests](#synerise-api-requests)
+    - [Superlogin API requests](#superlogin-api-requests)
+    - [QR code](#qr-code)
+  - [Info](#info)
 
 ## Installation
 
