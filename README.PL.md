@@ -1,7 +1,6 @@
 # Żappka & Superlogin API
 
 - [Żappka \& Superlogin API](#żappka--superlogin-api)
-  - [Instalacja](#instalacja)
   - [Współautorzy](#współautorzy)
   - [Przykłady](#przykłady)
     - [Logowanie](#logowanie)
@@ -9,16 +8,6 @@
     - [Żądania API Superlogin](#żądania-api-superlogin)
     - [Kod QR](#kod-qr)
   - [Info](#info)
-
-## Instalacja
-
-```bash
-git clone https://github.com/slotaddictcounselor/zappka-api
-cd ./zappka-api
-pip install requests
-```
-
-`requests` to jedyny moduł używany w `zappka.py` który trzeba zainstalować przez pip.
 
 ## Współautorzy
 

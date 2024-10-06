@@ -1,7 +1,6 @@
 # Żappka & Superlogin API
 
 - [Żappka \& Superlogin API](#żappka--superlogin-api)
-  - [Installation](#installation)
   - [Credits](#credits)
   - [Examples](#examples)
     - [Authentication](#authentication)
@@ -9,16 +8,6 @@
     - [Superlogin API requests](#superlogin-api-requests)
     - [QR code](#qr-code)
   - [Info](#info)
-
-## Installation
-
-```bash
-git clone https://github.com/slotaddictcounselor/zappka-api
-cd ./zappka-api
-pip install requests
-```
-
-`requests` is the only library used in `zappka.py` that is not available on a fresh Python install.
 
 ## Credits
 
