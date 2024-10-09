@@ -1,4 +1,4 @@
 - coupons
 - improve Superlogin change details?
-- change phone number (superlogin)
+- change phone number (Superlogin)
 - clean up code
