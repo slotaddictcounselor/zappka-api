@@ -380,6 +380,33 @@ class snrs:
 
         return response.json()
 
+    class coupons:
+        def get_offer_settings(snrsToken):
+            """
+            Returns json with alcohol and tobacco eligibility values.
+            """
+            url = "https://zabka-snrs.zabka.pl/schema-service/v2/documents/specialoffersettings/generate"
+
+            headers = {
+                "Authorization": snrsToken,
+            }
+
+            response = requests.get(url, headers=headers)
+
+            return response.json()
+        
+        def get_top_offers(snrsToken):
+            url = "https://zabka-snrs.zabka.pl/schema-service/proxy/promotions?page=1&limit=15&type=CUSTOM&status=ASSIGNED%2CACTIVE&tagNames=kat_top&sort=priority%2Cdesc"
+
+            headers = {
+                "Authorization": "Bearer " + snrsToken,
+                "API-Version": "4.4",
+                "User-Agent": "okhttp/4.12.0"
+            }
+
+            response = requests.get(url, headers=headers)
+
+            return response.json()
 
 class qr:
 

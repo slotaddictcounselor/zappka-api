@@ -84,7 +84,8 @@ while True:
                 print("2. Transfer żappsy")
                 print("3. Get personal information")
                 print("4. Get żappsy history (long response print!)")
-                print("5. Exit")
+                print("5. Coupon functions")
+                print("6. Exit")
 
                 choice = int(input("> "))
 
@@ -116,6 +117,22 @@ while True:
                     case 4:
                         print(zappka.snrs.get_zappsy_history(snrsToken))
                     case 5:
+                        while True:
+                            print("\n")
+                            print("Main > Synerise > Coupons")
+                            print("1. Get offer settings")
+                            print("2. Get top offers")
+
+                            choice = int(input("> "))
+
+                            match choice:
+                                case 1:
+                                    print(zappka.snrs.coupons.get_offer_settings(snrsToken))
+                                case 2:
+                                    print(zappka.snrs.coupons.get_top_offers(snrsToken))
+                                case _:
+                                    break
+                    case 6:
                         break
                     case _:
                         print("?")
