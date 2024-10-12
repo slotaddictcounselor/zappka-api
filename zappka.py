@@ -31,7 +31,7 @@ class auth:
         except KeyError:
             raise Exception("No idToken in response. (get temp auth token)")
 
-    def phone_auth_init(idToken, country_code, phone_number):
+    def send_verification_code(idToken, country_code, phone_number):
         """
         Start phone number authentication.
         Request sends SMS message to given phone number.

@@ -28,7 +28,7 @@ phone_number = input("Enter your phone number: ")
 country_code = input("Enter your number's country code: ")
 
 idToken = zappka.auth.get_idToken()
-zappka.auth.phone_auth_init(idToken, country_code, phone_number)
+zappka.auth.send_verification_code(idToken, country_code, phone_number)
 
 sms_code = input("Enter received SMS code: ")
 

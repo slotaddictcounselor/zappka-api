@@ -13,7 +13,7 @@ country_code = input("Enter country code (ex. 48): ")
 print("Sending SMS authentication request.")
 
 # Send phone authorization request. Sends a message to given phone number.
-zappka.auth.phone_auth_init(idToken, country_code, phone_number)
+zappka.auth.send_verification_code(idToken, country_code, phone_number)
 
 print("You should receive a message with a verification code.")
 

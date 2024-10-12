@@ -28,7 +28,7 @@ numer_telefonu = input("Podaj swój numer telefonu: ")
 numer_kierunkowy = input("Podaj numer kierunkowy kraju (np. 48): ")
 
 idToken = zappka.auth.get_idToken()
-zappka.auth.phone_auth_init(idToken, numer_kierunkowy, numer_telefonu)
+zappka.auth.send_verification_code(idToken, numer_kierunkowy, numer_telefonu)
 
 kod_sms = input("Wpisz kod otrzymany wiadomością SMS: ")
 
