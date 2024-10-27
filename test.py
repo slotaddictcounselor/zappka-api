@@ -122,6 +122,7 @@ while True:
                             print("Main > Synerise > Coupons")
                             print("1. Get offer settings")
                             print("2. Get top offers")
+                            print("3. Exit")
 
                             choice = int(input("> "))
 
@@ -130,8 +131,10 @@ while True:
                                     print(zappka.snrs.coupons.get_offer_settings(snrsToken))
                                 case 2:
                                     print(zappka.snrs.coupons.get_top_offers(snrsToken))
-                                case _:
+                                case 3:
                                     break
+                                case _:
+                                    print("?")
                     case 6:
                         break
                     case _:
